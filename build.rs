@@ -10,7 +10,8 @@ fn main()
 
     // configure --with-core=cobalt --enable-smp --enable-pshared
     let mut child = Command::new("./configure").current_dir("xenomai")
-        .arg(&format!("--with-core=cobalt --enable-smp --enable-pshared"))
+        //.arg(&format!("--with-core=cobalt --enable-smp --enable-pshared"))
+        .args(&["--with-core=cobalt", "--enable-smp", "--enable-pshared"])
         .spawn().expect("Couldn't make configure!");
     child.wait().expect("failed to wait on child");
 
