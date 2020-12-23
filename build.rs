@@ -5,15 +5,18 @@ use std::process::Command;
 fn main()
 {
     // ./scripts/bootstrap
-    Command::new("./scripts/bootstrap").current_dir("xenomai").status().expect("Couldn't make bootstrap!");
+    let mut child = Command::new("./scripts/bootstrap").current_dir("xenomai").spawn().expect("Couldn't make bootstrap!");
+    child.wait().expect("failed to wait on child");
 
     // configure --with-core=cobalt --enable-smp --enable-pshared
-    Command::new("./configure").current_dir("xenomai")
+    let mut child = Command::new("./configure").current_dir("xenomai")
         .arg(&format!("--with-core=cobalt --enable-smp --enable-pshared"))
-        .status().expect("Couldn't make configure!");
+        .spawn().expect("Couldn't make configure!");
+    child.wait().expect("failed to wait on child");
 
     // make
-    Command::new("make").current_dir("xenomai").status().expect("Couldn't make!");
+    let mut child = Command::new("make").current_dir("xenomai").spawn().expect("Couldn't make!");
+    child.wait().expect("failed to wait on child");
 
     let project_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
     println!("cargo:warning=project_dir: {}", project_dir);
