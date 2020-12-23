@@ -5,15 +5,15 @@ use std::process::Command;
 fn main()
 {
     // ./scripts/bootstrap
-    Command::new("./scripts/bootstrap").current_dir("xenomai").status().unwrap();
+    Command::new("./scripts/bootstrap").current_dir("xenomai").status().expect("Couldn't make bootstrap!");
 
     // configure --with-core=cobalt --enable-smp --enable-pshared
     Command::new("./configure").current_dir("xenomai")
         .arg(&format!("--with-core=cobalt --enable-smp --enable-pshared"))
-        .status().unwrap();
+        .status().expect("Couldn't make configure!");
 
     // make
-    Command::new("make").current_dir("xenomai").status().unwrap();
+    Command::new("make").current_dir("xenomai").status().expect("Couldn't make!");
 
     let project_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
     println!("cargo:warning=project_dir: {}", project_dir);
